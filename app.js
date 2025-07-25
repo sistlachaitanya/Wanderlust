@@ -27,6 +27,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Hi I am Root");
@@ -64,11 +65,15 @@ app.get("/listings/:id", async (req, res) => {
 });
 
 //Create Route
-app.post("/listings", async (req, res) => {
-    const newListing = req.body;
-    await Listing.insertOne(newListing);
-    const allListings= await Listing.find();
-    res.redirect("/listings");
+app.post("/listings", async (req, res, next) => {
+    try {
+        const newListing = new Listing(req.body);
+        await newListing.save();
+        res.redirect("/listings");
+    } catch(err) {
+        next(err);
+    }
+
 });
 
 //Edit Route
@@ -93,6 +98,10 @@ app.delete("/listings/:id", async (req, res) => {
     console.log(deletedListing);
     res.redirect("/listings")
 });
+
+app.use( (err, req, res, next) => {
+    res.send("something went wrong!!");
+})
 
 app.listen(8080, () => {
     console.log("Server is Listening to Port 8080");
