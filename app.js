@@ -77,7 +77,7 @@ app.post(
   "/listings",
   validateListing,
   wrapAsync(async (req, res, next) => {
-    const newListing = new Listing(req.body);
+    const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
   })
@@ -99,7 +99,7 @@ app.put(
   validateListing,
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body });
+    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
   })
 );
