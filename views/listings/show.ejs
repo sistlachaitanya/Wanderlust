@@ -1,28 +1,59 @@
 <% layout("layouts/boilerplate.ejs") -%>
 <div class="row mt-3">
-    <div class="col-8 offset-3">
-        <h3>Listing details :</h3>
+  <div class="col-6 offset-3">
+    <div class="card show-card">
+      <h4 class="card-title"><%= listing.title %></h4>
+      <img
+        src="<%= listing.image %>"
+        class="card-img-top show-img"
+        alt="listing_image"
+      />
+      <div class="card-body">
+        <p class="card-text">
+          <%= listing.description %> <br />
+          &#8377; <%= listing.price.toLocaleString("en-IN") %> <br />
+          <%= listing.location %> <br />
+          <%= listing.country %>
+        </p>
+      </div>
+      <div class="btns">
+        <form method="GET" action="/listings/<%= listing._id %>/edit">
+          <button class="btn btn-dark offset-2">Edit</button>
+        </form>
+        <form
+          method="POST"
+          action="/listings/<%= listing._id %>?_method=DELETE"
+        >
+          <button class="btn btn-danger offset-3">Delete</button>
+        </form>
+      </div>
     </div>
-    <div class="col-6 offset-3">
-        <div class="card show-card">
-            <img src="<%= listing.image %>" class="card-img-top show-img" alt="listing_image">
-            <div class="card-body">
-                <h5 class="card-title"><%= listing.title %></h5>
-                <p class="card-text">
-                    <%= listing.description %> <br>
-                    &#8377; <%= listing.price.toLocaleString("en-IN") %> <br>
-                    <%= listing.location %> <br>
-                    <%= listing.country %></li>
-                </p>
-            </div>
-            <div class="btns">
-                <form method="GET" action="/listings/<%= listing._id %>/edit">
-                    <button class="btn btn-dark offset-2">Edit</button>
-                </form>
-                <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-                    <button class="btn btn-danger offset-3">Delete</button>
-                </form>
-            </div>
+
+    <div>
+      <h4>We'd Love Your Feedback</h4>
+      <form method="POST" action="/listings/<%= listing._id %>/reviews">
+        <div class="mt-4 mb-2">
+          <label for="rating" class="form-label form-range">Rating</label>
+          <input
+            type="range"
+            min="1"
+            max="5"
+            id="rating"
+            name="review[rating]"
+          />
         </div>
+        <div class="mt-2 mb-3">
+          <label for="comment" class="form-label">Comments</label>
+          <textarea
+            class="form-control"
+            name="review[comment]"
+            id="comment"
+            rows="5"
+            cols="50"
+          ></textarea>
+        </div>
+        <button class="btn btn-outline-dark mb-3">Submit</button>
+      </form>
     </div>
+  </div>
 </div>
