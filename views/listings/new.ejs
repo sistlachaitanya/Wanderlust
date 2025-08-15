@@ -33,7 +33,14 @@
       </div>
       <div class="mb-3">
         <label for="image" class="form-label">Upload Listing Image</label>
-        <input id="image" name="listing[image]" type="file" class="form-control" />
+        <input
+          id="image"
+          name="listing[image]"
+          type="file"
+          class="form-control"
+          required
+        />
+        <div class="invalid-feedback">Upload the image for your Listing</div>
       </div>
       <div class="row">
         <div class="mb-3 col-md-4">

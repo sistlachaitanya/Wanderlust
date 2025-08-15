@@ -115,3 +115,13 @@ show-card {
   padding-left: 0;
   padding-right: 0;
 }
+
+.preview-img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  margin-top: 5px;
+}
+
