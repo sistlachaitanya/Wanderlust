@@ -61,29 +61,29 @@
           <div class="invalid-feedback">Enter a valid Price</div>
         </div>
         <div class="mb-3 col-md-8">
-          <label for="location" class="form-label">Location</label>
+          <label for="country" class="form-label">Country</label>
           <input
-            name="listing[location]"
-            value="<%=listing.location%>"
+            name="listing[country]"
+            value="<%=listing.country%>"
             type="text"
             class="form-control"
-            id="location"
+            id="country"
             required
           />
-          <div class="invalid-feedback">Location should be valid</div>
+          <div class="invalid-feedback">Country should be valid</div>
         </div>
       </div>
       <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
+        <label for="location" class="form-label">Location</label>
         <input
-          name="listing[country]"
-          value="<%=listing.country%>"
+          name="listing[location]"
+          value="<%=listing.location%>"
           type="text"
           class="form-control"
-          id="country"
+          id="location"
           required
         />
-        <div class="invalid-feedback">Country should be valid</div>
+        <div class="invalid-feedback">Location should be valid</div>
       </div>
       <button class="btn btn-dark edit-btn mt-2 mb-3">Edit</button>
     </form>

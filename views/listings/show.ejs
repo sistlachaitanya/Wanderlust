@@ -107,8 +107,7 @@
         <button class="btn btn-outline-dark mb-3">Submit</button>
       </form>
     </div>
-    <% } %>
-
+    <% } %> <%if(listing.reviews.length) { %>
     <div class="row mt-5">
       <h4 class="mb-3">All Reviews</h4>
       <% for(let review of listing.reviews) { %>
@@ -145,6 +144,14 @@
         </div>
       </div>
       <% } %>
+    </div>
+    <% } %>
+    <div>
+      <h3>Where you’ll be</h3>
+      <div
+        id="map"
+        data-coordinates="<%- JSON.stringify(listing.geometry.coordinates) %>"
+      ></div>
     </div>
   </div>
 </div>

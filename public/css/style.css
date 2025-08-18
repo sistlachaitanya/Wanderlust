@@ -125,3 +125,10 @@ show-card {
   margin-top: 5px;
 }
 
+
+#map {
+  width: 100%;
+  height: 400px; /* or 100vh for full screen */
+  border-radius: 12px;
+}
+

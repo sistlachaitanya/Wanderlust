@@ -25,7 +25,21 @@ const listingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  geometry: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
 });
+
+// Create the geospatial index
+listingSchema.index({ geometry: "2dsphere" });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing.reviews.length) {
@@ -33,6 +47,6 @@ listingSchema.post("findOneAndDelete", async (listing) => {
   }
 });
 
-const Listing = new mongoose.model("Listing", listingSchema);
+const Listing = mongoose.model("Listing", listingSchema);
 
 module.exports = Listing;

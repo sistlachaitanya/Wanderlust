@@ -41,5 +41,13 @@
       crossorigin="anonymous"
     ></script>
     <script src="/js/script.js"></script>
+    <script src="/js/map.js"></script>
+
+    <!-- Google Maps API (must be last, calls initMap from map.js) -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=<%= mapToken %>&callback=initMap"
+      async
+      defer
+    ></script>
   </body>
 </html>
