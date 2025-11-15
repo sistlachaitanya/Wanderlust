@@ -2,7 +2,12 @@
 
 <div class="row mt-3">
   <div class="col-6 offset-3">
-    <h3>SignUp on Wanderlust</h3>
+    <h3>Sign Up on Wanderlust</h3>
+
+    <% if (error && error.length > 0) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
     <form action="/signup" method="POST" class="needs-validation" novalidate>
       <div class="mb-3 mt-4">
         <label for="username" class="form-label">Username</label>
@@ -13,18 +18,19 @@
           class="form-control"
           required
         />
-        <div class="valid-feedback">Looks Good</div>
       </div>
+
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
         <input
           name="email"
           id="email"
-          type="text"
+          type="email"
           class="form-control"
           required
         />
       </div>
+
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
         <input
@@ -35,6 +41,7 @@
           required
         />
       </div>
+
       <button class="btn btn-success">SignUp</button>
     </form>
   </div>

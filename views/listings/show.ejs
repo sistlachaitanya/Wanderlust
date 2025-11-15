@@ -1,46 +1,99 @@
 <% layout("layouts/boilerplate.ejs") -%>
+
 <div class="row mt-3">
   <div class="col-6 offset-3">
+    <!-- LISTING CARD -->
     <div class="card show-card listing-card">
-      <h4 class="card-title"><%= listing.title %></h4>
+      <h2 class="card-title p-3 fw-bold" style="font-size: 1.8rem">
+        <%= listing.title %>
+      </h2>
+
       <img
         src="<%= listing.image.url %>"
         class="card-img-top show-img"
         alt="listing_image"
       />
+
       <div class="card-body">
-        <p class="card-text">Owned by <%= listing.owner.username %></p>
-        <p class="card-text"><%= listing.description %></p>
-        <p class="card-text">
-          &#8377; <%= listing.price.toLocaleString("en-IN") %>
+        <!-- Owner Details Section -->
+        <div class="mb-3 p-3 border rounded bg-light">
+          <h5 class="mb-2 fw-bold">
+            <i class="fa-solid fa-user"></i> Owner Details
+          </h5>
+
+          <p class="mb-1">
+            <strong>Name:</strong> <%= listing.owner.username %>
+          </p>
+
+          <p class="mb-0"><strong>Email:</strong> <%= listing.owner.email %></p>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <h5 class="fw-bold">About this place</h5>
+          <p class="text-muted"><%= listing.description %></p>
+        </div>
+
+        <!-- Price -->
+        <p class="card-text mb-2">
+          <i class="fa-solid fa-tag"></i>
+          <strong> Price:</strong>
+          &#8377; <%= listing.price.toLocaleString("en-IN") %> / day
         </p>
-        <p class="card-text"><%= listing.location %></p>
-        <p class="card-text"><%= listing.country %></p>
+
+        <!-- Location -->
+        <p class="card-text mb-1">
+          <i class="fa-solid fa-location-dot"></i>
+          <strong> Location:</strong> <%= listing.location %>
+        </p>
+
+        <!-- Country -->
+        <p class="card-text">
+          <i class="fa-solid fa-globe"></i>
+          <strong> Country:</strong> <%= listing.country %>
+        </p>
       </div>
-      <%if(currUser && currUser._id.equals(listing.owner._id)) { %>
-      <div class="btns">
+
+      <!-- OWNER BUTTONS -->
+      <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
+      <div class="btns mb-3 d-flex justify-content-around">
         <form method="GET" action="/listings/<%= listing._id %>/edit">
-          <button class="btn btn-dark offset-2">Edit</button>
+          <button class="btn btn-dark">Edit</button>
         </form>
+
         <form
           method="POST"
           action="/listings/<%= listing._id %>?_method=DELETE"
         >
-          <button class="btn btn-danger offset-3">Delete</button>
+          <button class="btn btn-danger">Delete</button>
         </form>
       </div>
       <% } %>
+
+      <!-- BOOKING BUTTON -->
+      <% if (currUser && !currUser._id.equals(listing.owner._id)) { %>
+      <form action="/listings/<%= listing._id %>/book" method="POST">
+        <button class="btn btn-success w-100 mb-3">Book This Listing</button>
+      </form>
+      <% } %> <% if (!currUser) { %>
+      <a href="/login" class="btn btn-primary w-100 mb-3">
+        Login to Book This Listing
+      </a>
+      <% } %>
     </div>
 
-    <% if(currUser) {%>
-    <div>
+    <!-- FEEDBACK FORM -->
+    <% if (currUser) { %>
+    <div class="mt-4">
       <h4>We'd Love Your Feedback</h4>
+
       <form
         method="POST"
         action="/listings/<%= listing._id %>/reviews"
         class="needs-validation"
         novalidate
       >
+        <!-- Rating stars -->
         <div class="mt-4 mb-2">
           <label for="rating" class="form-label form-range">Rating</label>
           <fieldset class="starability-slot">
@@ -51,8 +104,8 @@
               name="review[rating]"
               value="1"
               checked
-              aria-label="No rating."
             />
+
             <input
               type="radio"
               id="first-rate1"
@@ -60,6 +113,7 @@
               value="1"
             />
             <label for="first-rate1" title="Terrible">1 star</label>
+
             <input
               type="radio"
               id="first-rate2"
@@ -67,6 +121,7 @@
               value="2"
             />
             <label for="first-rate2" title="Not good">2 stars</label>
+
             <input
               type="radio"
               id="first-rate3"
@@ -74,6 +129,7 @@
               value="3"
             />
             <label for="first-rate3" title="Average">3 stars</label>
+
             <input
               type="radio"
               id="first-rate4"
@@ -81,6 +137,7 @@
               value="4"
             />
             <label for="first-rate4" title="Very good">4 stars</label>
+
             <input
               type="radio"
               id="first-rate5"
@@ -90,6 +147,8 @@
             <label for="first-rate5" title="Amazing">5 stars</label>
           </fieldset>
         </div>
+
+        <!-- Comments -->
         <div class="mt-2 mb-3">
           <label for="comment" class="form-label">Comments</label>
           <textarea
@@ -97,61 +156,65 @@
             name="review[comment]"
             id="comment"
             rows="5"
-            cols="50"
             required
           ></textarea>
+
           <div class="invalid-feedback">
             Please add some comments for reviews
           </div>
         </div>
+
         <button class="btn btn-outline-dark mb-3">Submit</button>
       </form>
     </div>
-    <% } %> <%if(listing.reviews.length) { %>
+    <% } %>
+
+    <!-- REVIEWS -->
+    <% if (listing.reviews.length) { %>
     <div class="row mt-5">
       <h4 class="mb-3">All Reviews</h4>
-      <% for(let review of listing.reviews) { %>
+
+      <% for (let review of listing.reviews) { %>
       <div class="col-md-6 mb-4 d-flex">
         <div
-          class="card shadow-sm border-0 p-3 w-100 h-100 position-relative"
+          class="card shadow-sm border-0 p-3 w-100 position-relative"
           style="background-color: #f9f9f9"
         >
-          <% if(currUser && review.author.equals(currUser._id)) {%>
-          <!-- Small Delete Button -->
+          <!-- Delete button -->
+          <% if (currUser && review.author.equals(currUser._id)) { %>
           <form
             method="POST"
             action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
             class="position-absolute top-0 end-0 m-2"
           >
-            <button class="btn btn-sm btn-outline-danger" title="Delete Review">
-              ✖
-            </button>
+            <button class="btn btn-sm btn-outline-danger">✖</button>
           </form>
           <% } %>
 
-          <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title fw-semibold">
-                @<%= review.author.username %>
-              </h5>
-              <p
-                class="starability-result card-text"
-                data-rating="<%= review.rating %>"
-              ></p>
-              <p class="card-text text-muted mb-2"><%= review.comment %></p>
-            </div>
+          <!-- Review Content -->
+          <div class="card-body">
+            <h5 class="fw-semibold">@<%= review.author.username %></h5>
+
+            <p
+              class="starability-result"
+              data-rating="<%= review.rating %>"
+            ></p>
+
+            <p class="text-muted mb-2"><%= review.comment %></p>
           </div>
         </div>
       </div>
       <% } %>
     </div>
     <% } %>
-    <div>
+
+    <!-- MAP -->
+    <div class="mt-4">
       <h3>Where you’ll be</h3>
       <div
         id="map"
         data-coordinates="<%- JSON.stringify(listing.geometry.coordinates) %>"
-        data-title="<%=listing.title%>"
+        data-title="<%= listing.title %>"
       ></div>
     </div>
   </div>
